@@ -4,103 +4,79 @@ import java.util.*;
 
 public class WordLadder {
 
-    public static void main(String[] args){
-        WordLadder obj = new WordLadder();
-        String[] arr = {"hot","cog","dog","tot","hog","hop","pot","dot"};
-        System.out.println(obj.ladderLength("hot","dog", Arrays.asList(arr)));
-    }
-
     class Node{
-        String val;
+        String word;
         boolean isVisited;
-        Set<Node> neighbors;
+
+        public Node(String word, boolean visited){
+            this.word = word;
+            this.isVisited = visited;
+        }
+
     }
-
-
-
-
-
 
 
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Set<String> visited = new HashSet<>();
+
         HashMap<String, Node> nodesmap = new HashMap<>();
+        HashMap<String, List<String>> wordmap = new HashMap<>();
         Queue<Node> que = new ArrayDeque<>();
         int steps = 0;
-        Node beginnode = new Node();
-        beginnode.val = beginWord;
-        beginnode.neighbors = new HashSet<>();
-        nodesmap.put(beginWord,beginnode);
-        que.add(beginnode);
-        for(String s : wordList){
-            if(!nodesmap.containsKey(s)){
-                Node node = new Node();
-                node.val = s;
-                node.neighbors = new HashSet<>();
-                nodesmap.put(s,node);
-            }
-        }
-
+        Node begin = new Node(beginWord, false);
+        que.add(begin);
+        boolean checkend = false;
         for(String s : wordList){
 
-            char[] ch = s.toCharArray();
-
-            int beginDiff = 0;
-            for(int i=0;i<ch.length;i++){
-                if(i<beginWord.length() && beginWord.charAt(i)!=ch[i]){
-                    beginDiff++;
-                }
-            }
-            if(beginDiff==1){
-                Node node = nodesmap.get(s);
-                node.neighbors.add(beginnode);
-                beginnode.neighbors.add(node);
+            for(int i=0;i<s.length();i++){
+                String st = s.substring(0,i)+"*"+s.substring(i+1);
+                List<String> arr = wordmap.getOrDefault(st, new ArrayList<String>());
+                arr.add(s);
+                wordmap.put(st, arr);
             }
 
-            for(int i=0;i<wordList.size();i++){
-                int diff = 0;
-                char[] c1 = wordList.get(i).toCharArray();
-                diff = Math.abs(c1.length-ch.length);
-                if(diff>1)
-                    continue;
-                for(int j=0;j<c1.length;j++){
-                    if(j<ch.length && ch[j]!=c1[j]){
-                        diff++;
-                    }
-                }
+            if(s.equalsIgnoreCase(endWord))
+                checkend = true;
 
-                if(diff==1){
-                    Node newNode = nodesmap.get(wordList.get(i));
-                    newNode.neighbors.add(nodesmap.get(s));
-                    nodesmap.get(s).neighbors.add(newNode);
-                }
-            }
         }
+
+        if(!checkend)
+            return 0;
 
         int lvlsize = 1;
         while(!que.isEmpty()){
+
             steps++;
             int currsize = 0;
-            for(int i=0;i<lvlsize;i++){
-                Node curr = que.poll();
-                curr.isVisited = true;
-                if(curr.val.equalsIgnoreCase(endWord)){
-                    return steps;
-                }
-                for(Node neighbor : curr.neighbors){
+            for(int k=0;k<lvlsize;k++){
 
-                    if(neighbor.isVisited)
-                        continue;
-                    que.add(neighbor);
-                    currsize++;
+                Node currNode = que.poll();
+                if(currNode.isVisited)
+                    continue;
+                currNode.isVisited = true;
+
+                for(int i=0;i<currNode.word.length();i++){
+                    String st = currNode.word.substring(0,i)+"*"+currNode.word.substring(i+1);
+                    if(wordmap.containsKey(st)){
+                        for(String neighbors: wordmap.get(st)){
+
+                            if(neighbors.equalsIgnoreCase(endWord))
+                                return steps+1;
+                            if(!nodesmap.containsKey(neighbors)){
+                                Node neighborNode = new Node(neighbors, false);
+                                nodesmap.put(neighbors, neighborNode);
+                                que.add(neighborNode);
+                                currsize++;
+                            }
+
+
+                        }
+                    }
                 }
+
             }
             lvlsize = currsize;
 
-
         }
-
         return 0;
-
     }
 }
