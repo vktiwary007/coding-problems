@@ -23,7 +23,6 @@ public class SurroundedRegions {
         boolean[][] visited= new boolean[r][c];
         if(c<1)
             return;
-
         for(int i=0;i<c;i++){
             if(board[0][i]=='O' && !visited[0][i]){
                 dfs(board, visited, 0, i);

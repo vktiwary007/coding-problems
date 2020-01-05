@@ -10,9 +10,7 @@ public class WallNGates {
         int n = rooms[0].length>0?rooms[0].length:0;
 
         for(int i=0;i<m;i++){
-
             for(int j=0;j<n;j++){
-
                 if(rooms[i][j]==0){
                     updateGates(rooms,i,j,0);
                 }
@@ -28,7 +26,6 @@ public class WallNGates {
             return;
 
         rooms[r][c] = d;
-
         updateGates(rooms, r+1, c, d+1);
         updateGates(rooms, r, c+1, d+1);
         updateGates(rooms, r-1, c, d+1);
