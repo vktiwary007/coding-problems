@@ -7,7 +7,6 @@ public class ClimbingStairs {
         if(n<=1)
             return 1;
         int[] ways = new int[n+1];
-
         ways[0] = 0;
         ways[1] = 1;
         ways[2] = 2;

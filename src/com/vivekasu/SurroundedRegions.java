@@ -44,9 +44,6 @@ public class SurroundedRegions {
             }
         }
 
-
-
-
         for(int i=0;i<r;i++){
             for(int j=0;j<c;j++){
                 if(board[i][j]=='O' &&!visited[i][j])
@@ -69,13 +66,11 @@ public class SurroundedRegions {
 
             int rn = r + row[i];
             int cn = c + col[i];
-
             if(rn>=0 && cn>=0 && rn<board.length && cn<board[0].length){
                 if(board[rn][cn]=='O' && !visited[rn][cn]){
                     dfs(board, visited, rn, cn);
                 }
             }
-
         }
 
     }

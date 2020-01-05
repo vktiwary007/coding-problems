@@ -16,7 +16,6 @@ public class WallNGates {
                 if(rooms[i][j]==0){
                     updateGates(rooms,i,j,0);
                 }
-
             }
         }
 
@@ -29,6 +28,7 @@ public class WallNGates {
             return;
 
         rooms[r][c] = d;
+
         updateGates(rooms, r+1, c, d+1);
         updateGates(rooms, r, c+1, d+1);
         updateGates(rooms, r-1, c, d+1);
