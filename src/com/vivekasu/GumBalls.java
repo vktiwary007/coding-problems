@@ -39,6 +39,7 @@ public class GumBalls {
             for(String k : color.keySet()){
                color.put(k,color.get(k)-10);
             }
+            
 
         }
 
