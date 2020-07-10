@@ -5,29 +5,15 @@ public class MoveZeroes {
     public void moveZeroes(int[] nums) {
 
         int n = nums.length;
-        int count = 0;
-
+        int prev = 0;
         for(int i=0;i<n;i++){
-            if(nums[i]==0)
-                count++;
+            while(i< n && nums[i]==0) i++;
+            if(i<n)
+                nums[prev++] = nums[i];
         }
 
-        int j = 0;
-        for(int i=0;i<n;i++){
-
-            if(nums[i]!=0){
-                nums[j] = nums[i];
-                j++;
-            }
-
-            if(j==(n-count))
-                break;
-
-        }
-
-        for(int i=j;i<n;i++){
+        for(int i=prev;i<n;i++)
             nums[i] = 0;
-        }
 
     }
 }
